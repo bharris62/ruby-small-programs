@@ -23,11 +23,10 @@ end
 def val_check?
   loop do
     val = gets.chomp
-    if val.empty? && val.to_f < 0
-      prompt('You must enter a valid, positive, number')
-    else
+    if val.to_i.to_s == val
       return val
-      break
+    else
+      prompt('You must enter a valid, positive, number')
     end
   end
 end
