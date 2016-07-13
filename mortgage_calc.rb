@@ -69,10 +69,13 @@ loop do
   months = years_to_month(loan_duration.to_f)
 
   fixed_loan = calculate_loan(monthly_rate.to_f, months.to_f, loan_amount.to_f)
-  prompt("PMT: #{fixed_loan.round(2)}
-  YEARS: #{loan_duration}
-  RATE: #{annual_rate}%")
+  puts "**********************"
+  prompt("PMT:    $#{fixed_loan.round(2)}
+  PERIOD: #{loan_duration} years
+  RATE:   #{annual_rate}%")
   prompt('Would you like to experiment some more? y/n')
   end_res = gets.chomp.downcase
   break unless end_res.downcase.start_with?('y')
 end
+
+prompt("See Ya!  Thanks for calculating with us :)")
