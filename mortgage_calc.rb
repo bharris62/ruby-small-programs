@@ -9,7 +9,7 @@ end
 
 # takes the years and makes them into monthly periods
 def years_to_month(years)
-  periods = years * 12.0
+  years * 12.0
 end
 
 # calculate fixed loan payment
@@ -20,44 +20,31 @@ def calculate_loan(rate, n_periods, total_loan_amount)
   fixed_payment.to_f
 end
 
+def val_check?
+  loop do
+    val = gets.chomp
+    if val.empty? && val.to_f < 0
+      prompt('You must enter a valid, positive, number')
+    else
+      return val
+      break
+    end
+  end
+end
+
 loop do
   prompt('Welcome to loan calculator...')
   prompt('Can you provide: Loan Amount?')
 
-  # check for valid input
-  loan_amount = ''
-  loop do
-    loan_amount = gets.chomp
-    if loan_amount.empty? || loan_amount.to_f < 0
-      prompt('You must enter a valid, positive, number')
-    else
-      break
-    end
-  end
+  loan_amount = val_check?
 
   prompt('Can you provide: APR in whole percent 5 = 5%')
-  annual_rate = ''
-  loop do
-    annual_rate = gets.chomp
-    if annual_rate.empty? || annual_rate.to_f < 0
-      prompt('You must enter a valid, positive, number')
-    else
-      break
-    end
-  end
+  annual_rate = val_check?
 
   monthly_rate = monthly_interest_rate(annual_rate.to_f)
 
   prompt('Can you provide: Loan Duration in years')
-  loan_duration = ''
-  loop do
-    loan_duration = gets.chomp
-    if loan_duration.empty? || loan_duration.to_i < 0
-      prompt('You must enter a valid, positive, number')
-    else
-      break
-    end
-  end
+  loan_duration = val_check?
 
   months = years_to_month(loan_duration.to_f)
   fixed_loan = calculate_loan(monthly_rate.to_f, months.to_f, loan_amount.to_f)
