@@ -1,5 +1,5 @@
 def monthly_interest_rate(apr)
-  apr = (apr / 100.to_f) / 12
+  apr = (apr / 100) / 12
   apr.to_f
 end
 
@@ -10,7 +10,6 @@ end
 # takes the years and makes them into monthly periods
 def years_to_month(years)
   periods = years * 12.0
-  periods.to_f
 end
 
 # calculate fixed loan payment
