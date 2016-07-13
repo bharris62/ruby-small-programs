@@ -1,7 +1,3 @@
-# get loan amount, APR, loan duration in years
-# calculate monthly int rate, and loan duration in months
-
-# Take rate from yearly to monthly
 def monthly_interest_rate(apr)
   apr = (apr / 100.to_f) / 12
   apr.to_f
@@ -41,7 +37,6 @@ loop do
   end
 
   prompt('Can you provide: APR in whole percent 5 = 5%')
-  # check for valid input
   annual_rate = ''
   loop do
     annual_rate = gets.chomp
@@ -55,7 +50,6 @@ loop do
   monthly_rate = monthly_interest_rate(annual_rate.to_f)
 
   prompt('Can you provide: Loan Duration in years')
-
   loan_duration = ''
   loop do
     loan_duration = gets.chomp
@@ -67,15 +61,16 @@ loop do
   end
 
   months = years_to_month(loan_duration.to_f)
-
   fixed_loan = calculate_loan(monthly_rate.to_f, months.to_f, loan_amount.to_f)
-  puts "**********************"
+
+  puts '**********************'
   prompt("PMT:    $#{fixed_loan.round(2)}
   PERIOD: #{loan_duration} years
   RATE:   #{annual_rate}%")
+
   prompt('Would you like to experiment some more? y/n')
   end_res = gets.chomp.downcase
   break unless end_res.downcase.start_with?('y')
 end
 
-prompt("See Ya!  Thanks for calculating with us :)")
+prompt('See Ya!  Thanks for calculating with us :)')
