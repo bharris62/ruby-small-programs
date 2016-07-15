@@ -1,5 +1,4 @@
-
-USER_CHOICE = %w(rock=r paper=p scissors=s lizard=l spock=sp)
+USER_CHOICE = %w(r=rock p=paper s=scissors l=lizard sp=spock)
 
 VALID_CHOICES = %w(r p s l sp)
 
