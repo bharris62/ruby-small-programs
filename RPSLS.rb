@@ -62,10 +62,12 @@ loop do
     scoreboard[:tie] += 1
   end
 
-  prompt("SCOREBOARD: Wins= #{scoreboard[:wins]}
-          loss= #{scoreboard[:loss]}
-          Ties= #{scoreboard[:tie]}")
-  prompt('Play Again?')
+  prompt("SCOREBOARD:
+     Wins= #{scoreboard[:wins]}
+     Loss= #{scoreboard[:loss]}
+     Ties= #{scoreboard[:tie]}")
+
+  prompt('Play Again? y/n')
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
