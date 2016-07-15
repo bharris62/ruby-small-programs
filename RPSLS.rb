@@ -29,13 +29,13 @@ def prompt(message)
   puts("=> #{message}")
 end
 
-loop do
-  scoreboard = {
-    wins: 0,
-    loss: 0,
-    tie: 0
-  }
+scoreboard = {
+  wins: 0,
+  loss: 0,
+  tie: 0
+}
 
+loop do
   choice = ''
   loop do
     prompt("Choose one: #{USER_CHOICE.join(', ')}")
