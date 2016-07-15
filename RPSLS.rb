@@ -1,30 +1,28 @@
+
 USER_CHOICE = %w(rock=r paper=p scissors=s lizard=l spock=sp)
+
 VALID_CHOICES = %w(r p s l sp)
 
-def choice_val(play)
-  case play
-  when 'r' then 0
-  when 'p' then 1
-  when 's' then 2
-  when 'l' then 3
-  when 'sp' then 4
-  end
-end
+HAND_WINNER = {
+    r: %w(l s),
+    p: %w(r sp),
+    s: %w(p l),
+    l: %w(p sp),
+    sp: %w(r s)
+}
 
-def calc_winner(a, b)
-  (5 + a - b) % 5
-end
-
-def display_results(win)
-  if win == 1 || win == 2
-    prompt('You Win!')
-  elsif win == 3 || win == 4
-    prompt('Computer Wins!')
-  elsif win == 0
-    prompt('it is a draw!')
+def display_results?(user, computer)
+  if user == computer.to_sym
+    prompt("Battle = DRAW!")
+  elsif HAND_WINNER[user].include?(computer)
+    prompt('Won The Battle!')
   else
-    prompt('contact support, something went wrong!')
+    prompt('Lost The Battle!')
   end
+end
+
+def win?(user, computer)
+  HAND_WINNER[user.to_sym].include?(computer)
 end
 
 def prompt(message)
@@ -32,6 +30,7 @@ def prompt(message)
 end
 
 loop do
+  scoreboard = {wins: 0, loss: 0, tie: 0}
   choice = ''
   loop do
     prompt("Choose one: #{USER_CHOICE.join(', ')}")
@@ -46,15 +45,20 @@ loop do
 
   computer_choice = VALID_CHOICES.sample
 
-  user_score = choice_val(choice).to_i
-  computer_score = choice_val(computer_choice).to_i
-
   prompt("You chose: #{choice} | Computer chose: #{computer_choice}")
 
-  winner = calc_winner(user_score, computer_score)
-  display_results(winner)
+  display_results?(choice.to_sym, computer_choice)
 
-  prompt('Play Again? ')
+  if win?(choice.to_sym, computer_choice)
+      scoreboard[:wins] += 1
+  elsif win?(computer_choice.to_sym, choice)
+    scoreboard[:loss] += 1
+  else
+    scoreboard[:tie] += 1
+  end
+
+  prompt("SCOREBOARD: Wins= #{scoreboard[:wins]} loss= #{scoreboard[:loss]} Ties= #{scoreboard[:tie]}")
+  prompt('Play Again?')
   answer = gets.chomp
   break unless answer.downcase.start_with?('y')
 end
