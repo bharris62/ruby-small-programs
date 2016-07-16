@@ -16,7 +16,7 @@ def intro
   Spock smashes scissors, scissors decapitates lizard,
   lizard eats paper, paper disproves Spock, Spock vaporizes rock,
   and as it always has, rock crushes scissors.
-  ************************************
+  **************************************
   The game is first to 5; Ties do not count."
 end
 
