@@ -47,7 +47,7 @@ end
 
 def is_winner(first, second)
   if first == 5
-    puts "You won the game! You Reached 5 first!"
+    puts "WON. THE. WAR! You Reached 5 first!"
     end_game?
   elsif second == 5
     puts "You lost the game! Comp reached 5 first"
@@ -74,28 +74,28 @@ scoreboard = {
 }
 puts intro
 loop do
-  choice = ''
+  user_choice = ''
   loop do
     prompt("Choose one: #{DEFAULT_PROMPT.join(', ')}")
-    choice = gets.chomp.downcase
-    if VALID_CHOICES.include?(choice)
+    user_choice = gets.chomp.downcase
+    if VALID_CHOICES.include?(user_choice)
       break
     else
       prompt('not a valid choice.')
     end
   end
 
-  computer_choice = VALID_CHOICES.sample
+  computer_user_choice = VALID_CHOICES.sample
 
-  user_expanded = expand_name(choice)
-  comp_expanded = expand_name(computer_choice)
+  user_expanded = expand_name(user_choice)
+  comp_expanded = expand_name(computer_user_choice)
   prompt("You chose: #{user_expanded} | Computer chose: #{comp_expanded}")
 
-  display_results(choice, computer_choice)
+  display_results(user_choice, computer_user_choice)
 
-  if win?(choice, computer_choice)
+  if win?(user_choice, computer_user_choice)
     scoreboard[:wins] += 1
-  elsif win?(computer_choice, choice)
+  elsif win?(computer_user_choice, user_choice)
     scoreboard[:loss] += 1
   else
     scoreboard[:tie] += 1
