@@ -10,13 +10,23 @@ HAND_COMBOS = {
   sp: %w(r s)
 }
 
+def intro
+  puts "Scissors cuts paper, paper covers rock,
+  rock crushes lizard, lizard poisons Spock,
+  Spock smashes scissors, scissors decapitates lizard,
+  lizard eats paper, paper disproves Spock, Spock vaporizes rock,
+  and as it always has, rock crushes scissors.
+  ************************************
+  The game is first to 5; Ties do not count."
+end
+
 def expand_name(abbr)
   case abbr
-  when 'r' then p 'rock'
-  when 'p' then 'paper'
-  when 's' then 'scissors'
-  when 'l' then 'lizard'
-  when 'sp' then 'spock'
+  when 'r' then 'Rock'
+  when 'p' then 'Paper'
+  when 's' then 'Scissors'
+  when 'l' then 'Lizard'
+  when 'sp' then 'Spock'
   end
 end
 
@@ -30,6 +40,21 @@ def display_results(user, computer)
   end
 end
 
+def end_game?
+  exit(false)
+end
+
+
+def is_winner(first, second)
+  if first == 5
+    puts "You won the game! You Reached 5 first!"
+    end_game?
+  elsif second == 5
+    puts "You lost the game! Comp reached 5 first"
+    end_game?
+  end
+end
+
 def win?(user, computer)
   HAND_COMBOS[user.to_sym].include?(computer)
 end
@@ -38,18 +63,21 @@ def prompt(message)
   puts("=> #{message}")
 end
 
+def clear_screen
+  system('clear') || system('cls')
+end
+
 scoreboard = {
   wins: 0,
   loss: 0,
   tie: 0
 }
-
+puts intro
 loop do
   choice = ''
   loop do
     prompt("Choose one: #{DEFAULT_PROMPT.join(', ')}")
     choice = gets.chomp.downcase
-
     if VALID_CHOICES.include?(choice)
       break
     else
@@ -78,9 +106,19 @@ loop do
      Loss= #{scoreboard[:loss]}
      Ties= #{scoreboard[:tie]}")
 
-  prompt('Play Again? y/n')
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
-end
+  is_winner(scoreboard[:wins].to_i, scoreboard[:loss].to_i)
+  prompt('End Game? y/n')
 
-prompt('thanks for playing!')
+  loop do
+    answer = gets.chomp.downcase
+    if answer == 'y'
+      clear_screen
+      break
+    elsif answer == 'n'
+      puts "Thanks for Playing!"
+      end_game?
+    else
+      puts "please use y/n"
+    end
+  end
+end
