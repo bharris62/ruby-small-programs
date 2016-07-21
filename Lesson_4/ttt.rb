@@ -11,6 +11,13 @@ def prompt(msg)
   puts "=>#{msg}"
 end
 
+def joinor(arr, del = ', ', word= 'or')
+  if arr.size > 1
+    arr[-1] = "#{word} #{arr.last}"
+  end
+  arr.size == 2 ? arr.join('') : arr.join(del)
+end
+
 # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
 def display_board(brd)
   system 'clear'
@@ -44,7 +51,7 @@ end
 def player_places_piece!(brd)
   square = ""
   loop do
-    prompt "Choose a square, #{empty_squares(brd).join(',')}:"
+    prompt "Choose a square, #{joinor(empty_squares(brd))}:"
     square = gets.chomp.to_i
     break if empty_squares(brd).include?(square)
     prompt 'not a valid choice'
@@ -76,6 +83,15 @@ def detect_winner(brd)
   nil
 end
 
+def update_score(brd, wins)
+  wins[:player] += 1 if detect_winner(brd) == "Player"
+  wins[:computer] += 1 if detect_winner(brd) == "Computer"
+  wins[:tie] += 1 if board_full?(brd)
+end
+
+
+scoreboard = {computer: 0, player: 0, tie: 0}
+
 loop do
   board = initialize_board
 
@@ -95,6 +111,20 @@ loop do
     prompt "#{detect_winner(board)} won!"
   else
     prompt "It's a tie!"
+  end
+
+  update_score(board, scoreboard)
+
+  prompt "SCORE: Player: #{scoreboard[:player]}
+  Computer: #{scoreboard[:computer]}
+  Ties: #{scoreboard[:tie]}"
+
+  if scoreboard[:player]  == 5
+    prompt 'You Won! WooHoo'
+    exit(false)
+  elsif scoreboard[:computer] == 5
+    prompt 'You are a loser, ;('
+    exit(false)
   end
 
   prompt "Play Again? (y or n)"
