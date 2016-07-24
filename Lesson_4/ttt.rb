@@ -60,7 +60,27 @@ def player_places_piece!(brd)
 end
 
 def computer_places_piece!(brd)
-  square = empty_squares(brd).sample
+  square = nil
+  # OFFENSE
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+    break if square
+  end
+  # DEFENSE
+  if !square
+    WINNING_LINES.each do |line|
+      square = find_at_risk_square(line, brd, PLAYER_MARKER)
+      break if square
+    end
+  end
+
+  if !square
+    if brd[5] == ' '
+      brd[5] = COMPUTER_MARKER
+    else
+      square = empty_squares(brd).sample
+    end
+  end
   brd[square] = COMPUTER_MARKER
 end
 
@@ -87,6 +107,14 @@ def update_score(brd, wins)
   wins[:player] += 1 if detect_winner(brd) == "Player"
   wins[:computer] += 1 if detect_winner(brd) == "Computer"
   wins[:tie] += 1 if board_full?(brd)
+end
+
+def find_at_risk_square(line, brd, marker)
+  if brd.values_at(*line).count(marker) == 2
+    brd.select { |k,v| line.include?(k) && v == INITITAL_MARKER}.keys.first
+  else
+    nil
+  end
 end
 
 
