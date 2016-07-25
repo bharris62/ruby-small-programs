@@ -59,7 +59,11 @@ def player_places_piece!(brd)
   brd[square] = PLAYER_MARKER
 end
 
-def computer_places_piece!(brd)
+def end_game?
+  exit(false)
+end
+
+def comp_places_piece!(brd)
   square = nil
   # OFFENSE
   WINNING_LINES.each do |line|
@@ -111,25 +115,49 @@ end
 
 def find_at_risk_square(line, brd, marker)
   if brd.values_at(*line).count(marker) == 2
-    brd.select { |k,v| line.include?(k) && v == INITITAL_MARKER}.keys.first
-  else
-    nil
+    binding.pry
+    brd.select { |k, v| line.include?(k) && v == INITITAL_MARKER }.keys.first
   end
 end
 
+def who_go_first(brd)
+  if CHOOSE_ORDER == 'c'
+    comp_go_first(brd)
+  else
+    player_go_first(brd)
+  end
+end
 
-scoreboard = {computer: 0, player: 0, tie: 0}
+def player_go_first(brd)
+  player_places_piece!(brd)
+  comp_places_piece!(brd)
+end
+
+def comp_go_first(brd)
+  comp_places_piece!(brd)
+  display_board(brd)
+  if someone_won?(brd) || board_full?(brd)
+    return
+  end
+  player_places_piece!(brd)
+end
+
+scoreboard = { computer: 0, player: 0, tie: 0 }
+
+prompt 'P or C? '
+ans = ''
+loop do
+  ans = gets.chomp.downcase
+  break if ans == 'p' || ans == 'c'
+  prompt 'not a valid choice'
+end
 
 loop do
   board = initialize_board
-
+  CHOOSE_ORDER = ans
   loop do
     display_board(board)
-
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
-
-    computer_places_piece!(board)
+    who_go_first(board)
     break if someone_won?(board) || board_full?(board)
   end
 
@@ -147,7 +175,7 @@ loop do
   Computer: #{scoreboard[:computer]}
   Ties: #{scoreboard[:tie]}"
 
-  if scoreboard[:player]  == 5
+  if scoreboard[:player] == 5
     prompt 'You Won! WooHoo'
     exit(false)
   elsif scoreboard[:computer] == 5
@@ -156,8 +184,15 @@ loop do
   end
 
   prompt "Play Again? (y or n)"
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+  loop do
+    answer = gets.chomp.downcase
+    if answer == 'y'
+      break
+    elsif answer == 'n'
+      puts "Thanks for Playing!"
+      end_game?
+    else
+      puts "please use y/n"
+    end
+  end
 end
-
-prompt "thanks for playing tic tac toe!"
