@@ -115,7 +115,6 @@ end
 
 def find_at_risk_square(line, brd, marker)
   if brd.values_at(*line).count(marker) == 2
-    binding.pry
     brd.select { |k, v| line.include?(k) && v == INITITAL_MARKER }.keys.first
   end
 end
