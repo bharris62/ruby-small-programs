@@ -65,11 +65,13 @@ end
 
 def comp_places_piece!(brd)
   square = nil
+
   # OFFENSE
   WINNING_LINES.each do |line|
     square = find_at_risk_square(line, brd, COMPUTER_MARKER)
     break if square
   end
+
   # DEFENSE
   if !square
     WINNING_LINES.each do |line|
